@@ -88,6 +88,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/lab-github-actions:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/lab-github-actions:${{ github.sha }}
 
+    final:
       - name: Imprimir contexto
         run: |
           echo "SHA: ${{ github.sha }}"
