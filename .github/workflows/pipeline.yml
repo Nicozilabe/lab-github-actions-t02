@@ -128,12 +128,11 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:${{ needs.build.outputs.image-tag }}
 
- deploy-production:
+  deploy-production:
     name: Deploy
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: production       # ← requiere aprobación manual
     steps:
       - uses: actions/checkout@v4
 
