@@ -127,3 +127,23 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:${{ needs.build.outputs.image-tag }}
+
+ deploy-production:
+    name: Deploy
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production       # ← requiere aprobación manual
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: Deploy a S3 (production)
+        run: aws s3 sync ./ s3://${{ secrets.S3_BUCKET }} --delete
