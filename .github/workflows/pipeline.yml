@@ -130,7 +130,7 @@ jobs:
 
   deploy-production:
     name: Deploy
-    needs: Push a Docker Hub
+    needs: push-artifact
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
